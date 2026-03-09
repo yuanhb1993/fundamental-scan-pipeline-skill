@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fundamental Scan Pipeline"
+  short_description: "Build multi-market fundamental scan workflows"
+  default_prompt: "Use $fundamental-scan-pipeline to implement or extend a multi-market data ingestion, normalization, evidence tracking, and scoring pipeline."
