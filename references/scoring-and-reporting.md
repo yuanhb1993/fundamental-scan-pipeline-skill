@@ -1,108 +1,86 @@
-# Scoring And Reporting
+# Reporting
 
-## Hard Filters
+## Goal
 
-For `STOCK` rows, the default hard filters are:
+Build one machine-readable report object and one human-readable Chinese report from the same data.
 
-- `revenue_usd_m >= min_revenue_usd_m`
-- `avg_turnover_usd_m >= min_turnover_usd_m`
-- `ebit_margin_pct > 0`
-- `operating_cf_usd_m > 0`
-- `total_debt_usd_m / revenue_usd_m <= 1`
+The report is generated for one symbol or for each symbol in a symbol list. Do not rely on ad hoc prose as the primary artifact. The primary artifact is `report_json`.
 
-For `ETF` rows, the default hard filters are:
+## Required Report Inputs
 
-- `market_cap_usd_m >= min_etf_aum_usd_m`
-- `avg_turnover_usd_m >= min_turnover_usd_m`
+The report builder should try to populate at least the following inputs:
 
-Exclude US non-common shares before scoring.
+- `股票代码`
+- `中文名称 / 英文名称`
+- `市场`
+- `行业分类`
+- `最近3年财报`
+- `主要竞争对手`
+- `最新价格 / 30日涨跌 / 市值 / 成交额`
+- `营收 / 营收增速 / EBIT / 经营现金流 / 自由现金流 / 负债`
+- `ROE / ROIC / WACC / PE`
+- `负面消息摘要`
+- `管理层讨论与资本配置观察`
 
-## Component Scores
+When a field is unavailable, preserve the missing state explicitly instead of fabricating a value.
 
-Recommended score families:
+## Report JSON Shape
 
-- `business_score`
-- `financial_score`
-- `risk_score`
-- `valuation_score`
-- `capital_eff_score`
-- `lei_score`
-- `total_score`
+Recommended top-level shape:
 
-Representative formulas:
+- `symbol`
+- `name`
+- `market`
+- `snapshot_date`
+- `data_freshness`
+- `evidence_summary`
+- `required_inputs`
+- `business_essence`
+- `financial_perspective`
+- `risk_and_moat`
+- `management_insight`
+- `valuation_and_timing`
+- `contrarian_checks`
+- `conclusion`
+- `next_data_requests`
 
-- `growth_score`: center around `15%-20%`
-- `financial_score`: average of growth, EBIT margin, CFO quality, FCF quality, and debt safety
-- `business_score`: moat + pricing power + market leadership
-- `valuation_score`: PE anchored near a target band, then adjusted by trend clock
-- `risk_score`: penalize accounting risk, negative-news density, weak ESG
-- `capital_eff_score`: reward `ROIC > WACC`
+## Chinese Section Order
 
-Normalize weight maps before computing `total_score`.
+Render Chinese report text in a fixed order:
 
-## LEI-Style Rule Pack
+1. `必须补充信息`
+2. `生意本质`
+3. `财务透视`
+4. `风险与竞争力`
+5. `管理层洞察`
+6. `综合结论`
+7. `估值与时机`
+8. `逆向思考`
+9. `下一步数据需求`
 
-Typical LEI hit conditions:
+## Rendering Rules
 
-- revenue above threshold
-- growth in the target range
-- positive EBIT margin
-- positive operating cash flow
-- positive free cash flow
-- debt / revenue <= 1
-- liquidity above threshold
+- Render Chinese text from `report_json`, not from a separate free-form pipeline.
+- Use explicit causal phrasing when data exists: `因为...，所以...`.
+- When data is missing, say which field is missing, why it matters, and how it weakens the conclusion.
+- Keep section order stable across one-symbol and multi-symbol outputs.
+- Multi-symbol mode should emit one report per symbol, not merge different companies into a single narrative body.
 
-Turn hit ratio into `0-10` scale for `lei_score`.
+## Placeholder Policy
 
-## Decision Tags
+Use explicit placeholders such as:
 
-Recommended defaults:
+- `数据缺失，暂无法确认`
+- `财报未补齐，以下判断仅基于已获取字段`
+- `竞争对手列表待补充`
 
-- `进入深度分析`: hard pass and `total_score >= 7.5`
-- `进入观察池`: hard pass and `total_score >= 6.0`
-- `暂不纳入`: otherwise
+Do not convert missing data into positive or negative conclusions without evidence.
 
-Trend-to-stage mapping should stay separate from decision tags. Example stage labels:
-
-- `UPTREND_2_OCLOCK`
-- `VERTICAL_OVERHEAT`
-- `RANGE_3_OCLOCK`
-- `DOWNTREND_4_TO_6_OCLOCK`
-
-## Risk Flags
-
-Emit compact, human-readable flags such as:
-
-- `财务造假风险需重点排查`
-- `ROIC未显著高于WACC`
-- `近30天负面事件密度偏高`
-- `债务相对收入压力较大`
-
-## Report Structure
-
-Keep the deep report machine-readable as JSON first, then render text as needed.
-
-Recommended Chinese sections:
-
-- `必须补充信息`
-- `生意本质`
-- `财务透视`
-- `风险与竞争力`
-- `管理层洞察`
-- `综合结论`
-- `估值与时机`
-- `逆向思考`
-- `下一步数据需求`
+## Persistence And Export
 
 Persist both:
 
 - `report_json`
-- textified export column produced from the same JSON
+- `report_text_zh`
 
-## Summary Reasons
-
-Persist short reasons alongside each result row, for example:
-
-- `LEI命中 X/Y 项`
-- `总分 Z/10`
-- explicit hard-fail reasons when the symbol is rejected
+Exports should allow one row per symbol, with the Chinese report text stored as a text column when CSV or tabular export is needed.

@@ -32,16 +32,20 @@ Financial core:
 - `operating_cf_usd_m`
 - `free_cf_usd_m`
 - `total_debt_usd_m`
-
-Quality / risk:
-
-- `moat_score`
-- `pricing_power_score`
-- `esg_score`
-- `accounting_risk_score`
 - `roic_pct`
 - `wacc_pct`
-- `news_negative_score`
+- `roe_pct`
+
+Report-support fields:
+
+- `moat_summary`
+- `pricing_power_summary`
+- `esg_summary`
+- `accounting_risk_summary`
+- `major_risk_points`
+- `management_notes`
+- `negative_news_summary`
+- `valuation_summary`
 
 Metadata:
 
@@ -52,6 +56,7 @@ Metadata:
 - `field_sources_json`
 - `field_confidence_json`
 - `evidence_updated_at`
+- `report_updated_at`
 
 ## Symbol Normalization
 
@@ -64,11 +69,11 @@ Metadata:
 
 Tracked evidence fields typically include:
 
-- `name`, `industry`
+- `name`, `industry`, `competitors`
 - financial core fields
 - `market_cap_usd_m`, `avg_turnover_usd_m`, `pe_ttm`
 - `trend_clock`, `last_price`, `price_change_30d`
-- quality / risk score fields
+- report-support fields
 
 Confidence levels:
 
@@ -101,8 +106,7 @@ Do not assign high-confidence stock-style financial evidence to ETF placeholder 
 Use separate tables or logical entities for:
 
 - `fundamental_universe`: current canonical rows
-- `fundamental_scan_tasks`: one scan run + summary + config snapshot
-- `fundamental_scan_results`: one evaluated result row per symbol per task
 - `fundamental_db_fetch_jobs`: staged refresh job with retry/resume state
+- `fundamental_reports`: report snapshot keyed by symbol, market, and report timestamp or task id
 
-Keep result rows denormalized enough for UI and CSV export, but always link them back to the canonical universe row.
+Keep report rows linked back to the canonical universe row so report output remains traceable to source data and evidence metadata.
