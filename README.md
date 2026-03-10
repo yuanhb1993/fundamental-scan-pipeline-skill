@@ -5,23 +5,30 @@
 - 针对一个或多个 A股 / 港股 / 美股标的物获取多源数据
 - 基于标准化后的字段生成结构化中文深度报告
 
-它不再面向以下能力：
+默认输出不再面向以下能力：
 
 - 扫描排名与打分榜单
 - 覆盖率仪表盘
 - 候选池数据库列表页
 - 投资组合评分或仓位管理
+- 默认交易执行建议（仓位、止盈、止损、精确入场）
 
-这个 skill 的最终目标很明确：给定一个或多个标的代码，输出一份字段可追溯、证据可解释、结构固定的中文深度报告。
+这个 skill 的目标是：给定一个或多个标的代码或公司名，先完成实体解析与数据获取，再输出一份字段可追溯、证据可解释、结构固定的深度报告。
 
 ## Core Positioning
 
-这个 skill 不是一个“简单抓数器”，也不是一个“扫描打分器”。
+这个 skill 不是“抓一点数据就写评论”，也不是“给股票打个分”。
 
-它的定位是一个可移植的“标的物深度分析引擎”，把多源数据获取、字段标准化、证据记录和中文深度报告生成串成一条稳定链路，用于回答两个问题：
+它的定位是一个可移植的“标的物深度分析协议”，把以下过程固定下来：
 
-- 这家公司到底靠什么赚钱，赚钱模式是否稳固
-- 现在这个价格和时机，是否值得进一步介入或继续观察
+1. 实体解析
+2. 多源数据获取
+3. 字段标准化
+4. 证据与置信度记录
+5. `22步深度分析框架` 校验
+6. `LEI 准则` 交叉校验
+7. 输出 `report_json`
+8. 从同一份 `report_json` 渲染结构化 Markdown 中文报告
 
 ## Repository Structure
 
@@ -38,6 +45,43 @@
     └── api-contracts.md
 ```
 
+## Core Output Contract
+
+这个 skill 的默认输出必须同时包含两份内容：
+
+### 1. `report_json`
+
+这是主输出，必须先生成。它负责承载：
+
+- 实体解析结果
+- 规范化字段
+- 来源与置信度
+- 22 步分析状态
+- LEI 校验状态
+- 事实层结论
+- 推断层结论
+- 缺失项与待补数据
+
+### 2. `report_markdown_zh`
+
+这是面向阅读的结构化 Markdown 文档，必须由 `report_json` 渲染而来，不能独立自由发挥。
+
+它至少应包含：
+
+- 报告头
+- 必须补充信息
+- 实体解析
+- 22 步状态矩阵
+- LEI 校验矩阵
+- 生意本质
+- 财务透视
+- 风险与竞争力
+- 管理层洞察
+- 综合结论
+- 估值与时机
+- 逆向思考
+- 下一步数据需求
+
 ## What This Skill Covers
 
 ### 1. Multi-Market Data Acquisition
@@ -47,25 +91,33 @@
 - 支持分阶段抓取、失败重试、断点续跑、部分完成
 - 支持多源回退与字段级来源记录
 
-### 2. Canonical Normalization
+### 2. Entity Resolution
+
+- 输入可以是公司名、股票代码或混合列表
+- 每个输入都必须先解析成明确的上市主体
+- 解析结果必须显式记录，而不是在正文中隐式跳过
+- 如果实体存在歧义，必须输出歧义状态而不是直接继续下结论
+
+### 3. Canonical Normalization
 
 - 将不同来源映射为统一 canonical schema
 - 统一 `symbol / market / asset_type` 规范
 - 对价格、成交额、估值、核心财务指标、行业、竞争对手等字段做标准化
 - 区分缺失值、占位值和真实 0 值
 
-### 3. Evidence And Freshness
+### 4. Evidence And Freshness
 
 - 记录 row 级别和 field 级别的 `source / confidence`
 - 记录 `updated_at / evidence_updated_at / report_updated_at`
+- 区分一级来源、二级来源、三级来源
 - 保留字段证据，不允许低质量回退静默覆盖高质量数据
 
-### 4. Structured Chinese Deep Report
+### 5. Structured Chinese Deep Report
 
 - 先生成结构化 `report_json`
-- 再由同一份 `report_json` 渲染中文文本报告
+- 再生成 `report_markdown_zh`
 - 支持一个标的一份报告，也支持多个标的逐个输出报告
-- 输出结构固定，便于后续 API、导出或数据库落盘
+- 输出结构固定，便于 API、导出或数据库落盘
 
 ## Report Evaluation Framework
 
@@ -79,7 +131,7 @@
 - `22步框架` 负责“看深”
 - `LEI 准则` 负责“看硬”
 
-报告输出时，两者会被整合到同一份结构化深度报告中。
+报告输出时，两者必须整合到同一份结构化深度报告中，并带状态标注。
 
 ## Integrated 22-Step Analysis Skeleton
 
@@ -108,11 +160,11 @@
 21. 股权激励、股东增减持、审计意见等治理信号检查
 22. 股息率、利润构成、可持续性与“好公司、好价格”判断
 
-这些步骤并不要求每次都拿到全部满量数据，但要求报告对每一项都给出以下三种状态之一：
+但默认报告协议要求：
 
-- `已验证`
-- `部分验证`
-- `数据缺失待补`
+- 每一步都必须标记 `已验证 / 部分验证 / 数据缺失待补`
+- 每一步都应能回溯到字段与来源
+- 第 16/17/18 步若未显式启用 `trade_overlay`，只能作为分析占位项，不得输出伪精确交易建议
 
 ## Integrated LEI Rule Set
 
@@ -138,24 +190,28 @@ LEI 准则作为报告中的“硬标准校验层”，主要包括：
 ### 行业地位与交易前提
 
 1. 尽量优先行业龙头，不优先行业第二名或边缘跟随者
-2. 美股/大盘股等流动性不足的标的不应进入高优先级报告队列
-3. 趋势判断不能替代基本面，但会影响“时机”章节的结论表达
+2. 流动性不足的标的不应进入高优先级结论
+3. 趋势判断不能替代基本面，但会影响“估值与时机”章节的边界表达
 
-## How The 22 Steps And LEI Work Together
+## Output Guardrails
 
-两套框架的整合方式如下：
+默认模式下，报告必须遵守以下边界：
 
-- `22步框架` 决定报告章节与推理顺序
-- `LEI 准则` 作为其中的硬校验子模块，嵌入到“生意本质”“财务透视”“综合结论”“估值与时机”等章节
-- 如果 `22步框架` 给出偏正面结论，但 `LEI` 多项不达标，报告必须明确标注“结论偏弱，硬标准不足”
-- 如果 `LEI` 达标但 22 步中的风险、治理、护城河、估值环节出现明显问题，报告同样不能直接给出乐观结论
+- 必须先输出实体解析结果
+- 必须先有 `report_json`，再有 `report_markdown_zh`
+- 事实层与推断层必须分开
+- 不允许把缺失字段包装成肯定结论
+- 不允许把媒体报道等三级来源直接写成已验证事实
+- 不允许默认输出仓位、止损、止盈、明确买点
+- 不允许在没有公式与时间戳的情况下输出伪精确估值结论
 
-也就是说，这个 skill 的结论不是单一分数决定，而是：
+如果任务显式要求交易叠加层，才允许额外输出：
 
-- 先验证数据
-- 再走 22 步结构化分析
-- 再用 LEI 硬标准交叉校验
-- 最后输出结构化中文结论
+- `trade_overlay_json`
+- 仓位建议
+- 风险回报
+- 止损止盈
+- 技术位与时机备忘
 
 ## Output Characteristics
 
@@ -164,8 +220,9 @@ LEI 准则作为报告中的“硬标准校验层”，主要包括：
 - 每个核心结论尽量对应具体字段或数据来源
 - 结论中明确区分“已证实”“高概率判断”“待补证据”
 - 对缺失字段要指出缺口，而不是跳过不说
-- 报告必须保留 `source / confidence / freshness` 语义，避免变成不可追溯的纯文本评论
+- 报告必须保留 `source / confidence / freshness` 语义
 - 多标的模式下，必须一标的一报告，不混写
+- Markdown 文档必须结构化，不接受纯散文式长文
 
 ## Reference Files
 
@@ -175,7 +232,7 @@ LEI 准则作为报告中的“硬标准校验层”，主要包括：
 
 ### [references/workflow.md](./references/workflow.md)
 
-说明数据获取、回退、重试、断点续跑、partial completion 和报告生成顺序。
+说明实体解析、数据获取、回退、重试、断点续跑、partial completion 和报告生成顺序。
 
 ### [references/canonical-schema.md](./references/canonical-schema.md)
 
@@ -183,59 +240,61 @@ LEI 准则作为报告中的“硬标准校验层”，主要包括：
 
 ### [references/scoring-and-reporting.md](./references/scoring-and-reporting.md)
 
-说明结构化中文深度报告的 JSON 结构、中文章节、渲染规则和占位策略。
+说明结构化中文深度报告的 JSON 结构、22 步状态、LEI 状态、Markdown 渲染规则和占位策略。
 
 ### [references/api-contracts.md](./references/api-contracts.md)
 
-说明数据导入、抓取任务、报告查询和导出相关的 API 契约。
+说明数据导入、抓取任务、报告生成、报告查询和导出相关的 API 契约。
 
 ## Typical Usage
 
 显式调用：
 
 ```text
-Use $fundamental-scan-pipeline to implement a multi-market symbol data and Chinese report workflow.
+Use $fundamental-scan-pipeline to implement a multi-market symbol data and Chinese report workflow with report_json and structured Markdown output.
 ```
 
 中文调用：
 
 ```text
-用 $fundamental-scan-pipeline 帮我实现针对一个或多个标的物的数据获取和结构化中文深度报告输出。
+用 $fundamental-scan-pipeline 帮我实现针对一个或多个标的物的数据获取、结构化中文深度报告，以及 JSON + Markdown 双输出。
 ```
 
 ## Example Prompts
 
 ```text
-Use $fundamental-scan-pipeline to fetch data for AAPL and MSFT, normalize the fields, and generate structured Chinese deep reports.
+Use $fundamental-scan-pipeline to fetch data for AAPL and MSFT, resolve entities explicitly, and generate report_json plus structured Markdown Chinese reports.
 ```
 
 ```text
-用 $fundamental-scan-pipeline 针对 0700.HK、600519.SH 和 NVDA 生成结构化中文深度报告。
+用 $fundamental-scan-pipeline 针对 0700.HK、600519.SH 和 NVDA 生成逐标的 report_json 和结构化 Markdown 深度报告。
 ```
 
 ```text
-Use $fundamental-scan-pipeline to add fallback data sources and evidence metadata for one-symbol and multi-symbol report generation.
+Use $fundamental-scan-pipeline to add fallback data sources, entity resolution, and evidence metadata for one-symbol and multi-symbol report generation.
 ```
 
 ```text
-用 $fundamental-scan-pipeline 把报告输出统一成 report_json 和中文文本两种形式，并把 22 步分析和 LEI 准则整合进去。
+用 $fundamental-scan-pipeline 把报告输出统一成 report_json 和 Markdown 两种形式，并把 22 步分析和 LEI 准则整合进去。
 ```
 
 ## Recommended Workflow For Another Codex
 
 1. 先读 `SKILL.md`
-2. 明确本次任务是在改数据获取、schema、报告结构，还是 API
+2. 明确本次任务是在改实体解析、数据获取、schema、报告结构，还是 API
 3. 只加载相关 reference，不要无关扩展
 4. 先用一个标的做 smoke test，再验证多标的
 5. 分开验证原始数据新鲜度、证据新鲜度和报告新鲜度
+6. 检查 JSON 与 Markdown 是否逐段一致
 
 ## Portability Notes
 
 - 这是文档型 skill，不绑定某个具体框架
 - 可用于 Flask、FastAPI、Django、Node.js 或其他后端
-- 核心可移植能力只有两类：
+- 核心可移植能力只有三类：
+  - 实体解析
   - 数据获取与标准化
-  - 结构化中文深度报告生成
+  - 结构化中文深度报告生成（JSON + Markdown）
 
 ## Current Target Domain
 

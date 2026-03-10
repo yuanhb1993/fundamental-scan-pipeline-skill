@@ -23,6 +23,7 @@ Price / liquidity:
 - `market_cap_usd_m`
 - `pe_ttm`
 - `trend_clock`
+- `quote_as_of`
 
 Financial core:
 
@@ -55,8 +56,21 @@ Metadata:
 - `row_confidence`
 - `field_sources_json`
 - `field_confidence_json`
+- `source_tier_json`
 - `evidence_updated_at`
 - `report_updated_at`
+
+Report contract fields:
+
+- `entity_resolution_json`
+- `step_status_json`
+- `lei_checks_json`
+- `assertions_json`
+- `valuation_calc_json`
+- `report_json`
+- `report_markdown_zh`
+- `report_confidence`
+- `trade_overlay_json` optional
 
 ## Symbol Normalization
 
@@ -72,7 +86,7 @@ Tracked evidence fields typically include:
 - `name`, `industry`, `competitors`
 - financial core fields
 - `market_cap_usd_m`, `avg_turnover_usd_m`, `pe_ttm`
-- `trend_clock`, `last_price`, `price_change_30d`
+- `trend_clock`, `last_price`, `price_change_30d`, `quote_as_of`
 - report-support fields
 
 Confidence levels:
@@ -90,6 +104,12 @@ Representative source heuristics:
 - `SEC_EDGAR_US`: core financials `0.90`
 - `ALPHA_VANTAGE`: core financials `0.86`, valuation/name/industry `0.78`
 
+Source tiers:
+
+- `T1`: exchange filings, audited reports, regulator disclosures, primary research papers
+- `T2`: company press releases, official corporate pages, earnings decks
+- `T3`: media reports, aggregators, market commentary
+
 Do not assign high-confidence stock-style financial evidence to ETF placeholder fields.
 
 ## Merge Rules
@@ -100,6 +120,15 @@ Do not assign high-confidence stock-style financial evidence to ETF placeholder 
   - `debt > 0` -> positive debt
   - `debt == 0` with source evidence -> confirmed zero
   - `debt == 0` with no evidence -> missing / unverified
+- Keep fact assertions separate from inference assertions in `assertions_json`.
+
+## Report-State Rules
+
+- `entity_resolution_json` must record how the input mapped to the final symbol or why it failed.
+- `step_status_json` must record all 22 steps using `已验证 / 部分验证 / 数据缺失待补`.
+- `lei_checks_json` must record each LEI rule as `通过 / 不通过 / 未知` with evidence links.
+- `valuation_calc_json` is required before any explicit valuation claim is marked as verified.
+- `trade_overlay_json` must remain empty unless explicitly enabled.
 
 ## Related Persistence Objects
 

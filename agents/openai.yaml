@@ -1,4 +1,4 @@
 interface:
   display_name: "Fundamental Scan Pipeline"
-  short_description: "Build multi-market data and Chinese report workflows"
-  default_prompt: "Use $fundamental-scan-pipeline to implement or extend multi-market symbol data ingestion, canonical normalization, evidence tracking, and structured Chinese deep-report generation."
+  short_description: "Build multi-market data and Chinese JSON/Markdown report workflows"
+  default_prompt: "Use $fundamental-scan-pipeline to implement or extend multi-market entity resolution, symbol data ingestion, canonical normalization, evidence tracking, and structured Chinese deep-report generation with report_json plus structured Markdown output."

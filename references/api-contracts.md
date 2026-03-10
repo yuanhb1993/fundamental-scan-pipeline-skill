@@ -50,6 +50,31 @@ Job status should expose:
 
 Use to read the latest job or a specific job by id.
 
+## Report Generation
+
+Recommended generation endpoint:
+
+`POST /api/v1/fundamental-reports/generate`
+
+Important request fields:
+
+- `symbols`
+- `company_names` optional
+- `markets` optional
+- `as_of_date` optional
+- `strict_mode` default `true`
+- `allow_inference` default `true`
+- `include_markdown` default `true`
+- `include_trade_overlay` default `false`
+
+Expected response shape:
+
+- `job_id` or synchronous report summary
+- `resolved_symbols`
+- `unresolved_inputs`
+- `report_count`
+- `artifacts`: `report_json`, `report_markdown_zh` when synchronous
+
 ## Report Detail
 
 Recommended report-facing endpoints:
@@ -62,9 +87,13 @@ Report detail should include:
 
 - canonical identity fields
 - freshness fields
+- entity resolution block
 - evidence summary
+- `step_status_matrix`
+- `lei_check_matrix`
 - `report_json`
-- optional rendered `report_text_zh`
+- `report_markdown_zh`
+- optional `trade_overlay_json`
 
 ## Export Rules
 
@@ -73,4 +102,5 @@ Exports should support:
 - one symbol or multiple symbols
 - selected columns
 - file names with market / symbol scope / datetime
-- optional inclusion of `report_text_zh` as a text column
+- optional inclusion of `report_markdown_zh` as a text column
+- optional inclusion of `trade_overlay_json` only when explicitly enabled
