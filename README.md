@@ -40,7 +40,9 @@
 │   └── openai.yaml
 ├── assets/
 │   ├── report_json.template.json
-│   └── report_markdown_zh.template.md
+│   ├── report_markdown_zh.template.md
+│   ├── report_batch_json.template.json
+│   └── report_batch_markdown_zh.template.md
 └── references/
     ├── workflow.md
     ├── canonical-schema.md
@@ -51,7 +53,7 @@
 
 ## Core Output Contract
 
-这个 skill 的默认输出必须同时包含两份内容：
+这个 skill 的默认输出必须同时包含两份内容；在多标的模式下，还应提供组合后的批量产物：
 
 ### 1. `report_json`
 
@@ -85,6 +87,16 @@
 - 估值与时机
 - 逆向思考
 - 下一步数据需求
+
+### 3. `report_batch_json` 与 `report_batch_markdown_zh`
+
+当输入是多个标的时，批量输出必须遵守以下规则：
+
+- 先逐标的完整生成 `report_json`
+- 再逐标的完整生成 `report_markdown_zh`
+- 最后再组合成 `report_batch_json` 和 `report_batch_markdown_zh`
+- 不允许把多标的结果压缩成简略摘要表替代完整报告
+- 组合包必须保留每个标的的完整结构，而不是只保留结论摘要
 
 ## What This Skill Covers
 
@@ -261,6 +273,14 @@ LEI 准则作为报告中的“硬标准校验层”，主要包括：
 ### [assets/report_markdown_zh.template.md](./assets/report_markdown_zh.template.md)
 
 标准 `report_markdown_zh` 样例，可直接作为渲染输出模板。
+
+### [assets/report_batch_json.template.json](./assets/report_batch_json.template.json)
+
+多标的批量 `report_batch_json` 样例，展示“先逐标的完整生成，再组合”的标准结构。
+
+### [assets/report_batch_markdown_zh.template.md](./assets/report_batch_markdown_zh.template.md)
+
+多标的批量 `report_batch_markdown_zh` 样例，展示按完整报告顺序拼接的标准形式。
 
 ## Typical Usage
 

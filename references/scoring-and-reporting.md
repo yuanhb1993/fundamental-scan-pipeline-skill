@@ -13,9 +13,27 @@ Default outputs:
 - `report_json`
 - `report_markdown_zh`
 
+Batch-mode composed outputs when multiple symbols are requested:
+
+- `report_batch_json`
+- `report_batch_markdown_zh`
+
 Optional output only when explicitly enabled:
 
 - `trade_overlay_json`
+
+## Batch Composition Contract
+
+When multiple symbols are requested, batch output must follow this sequence:
+
+1. build one complete `report_json` per symbol
+2. build one complete `report_markdown_zh` per symbol
+3. compose `report_batch_json` from the full per-symbol JSON artifacts
+4. compose `report_batch_markdown_zh` by concatenating the full per-symbol Markdown reports
+
+Do not replace complete per-symbol reports with compact summary rows.
+
+Use `assets/report_batch_json.template.json` and `assets/report_batch_markdown_zh.template.md` as the canonical batch samples.
 
 ## Entity Resolution Block
 
@@ -138,7 +156,7 @@ The Markdown report must be structured. Avoid free-form prose dumps without head
 - Use explicit causal phrasing when data exists: `因为...，所以...`.
 - When data is missing, say which field is missing, why it matters, and how it weakens the conclusion.
 - Keep section order stable across one-symbol and multi-symbol outputs.
-- Multi-symbol mode should emit one report per symbol, not merge different companies into a single narrative body.
+- Multi-symbol mode should emit one complete report per symbol, then compose the batch artifact from those full reports.
 - Keep fact layer and inference layer visibly distinct.
 
 ## Guardrails

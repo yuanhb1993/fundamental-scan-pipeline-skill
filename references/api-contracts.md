@@ -74,6 +74,7 @@ Expected response shape:
 - `unresolved_inputs`
 - `report_count`
 - `artifacts`: `report_json`, `report_markdown_zh` when synchronous
+- `batch_artifacts`: `report_batch_json`, `report_batch_markdown_zh` when multiple symbols are requested
 
 ## Report Detail
 
@@ -93,6 +94,7 @@ Report detail should include:
 - `lei_check_matrix`
 - `report_json`
 - `report_markdown_zh`
+- `report_batch_json` and `report_batch_markdown_zh` when the request is multi-symbol
 - optional `trade_overlay_json`
 
 ## Export Rules

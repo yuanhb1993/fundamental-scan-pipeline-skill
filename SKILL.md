@@ -25,6 +25,7 @@ Implement a portable workflow for multi-source market data acquisition, canonica
 - Treat raw-data freshness separately from evidence freshness and report freshness.
 - Keep the primary artifact machine-readable first: generate `report_json` before any text rendering.
 - Always render a structured Markdown Chinese report from the same `report_json`. Do not generate free-form prose independently.
+- In multi-symbol mode, generate one complete per-symbol `report_json` and one complete per-symbol Markdown report first, then compose batch artifacts. Do not collapse them into summary-only output.
 - Mark every 22-step item and every LEI rule with `已验证 / 部分验证 / 数据缺失待补`.
 - Separate fact layer from inference layer. Unsupported inferences must not be promoted to verified facts.
 - Do not emit total scores, position sizing, stop-loss, stop-profit, or entry timing overlays unless the task explicitly enables an optional `trade_overlay` mode.
