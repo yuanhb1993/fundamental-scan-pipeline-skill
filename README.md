@@ -38,11 +38,15 @@
 ├── README.md
 ├── agents/
 │   └── openai.yaml
+├── assets/
+│   ├── report_json.template.json
+│   └── report_markdown_zh.template.md
 └── references/
     ├── workflow.md
     ├── canonical-schema.md
     ├── scoring-and-reporting.md
-    └── api-contracts.md
+    ├── api-contracts.md
+    └── output-template.md
 ```
 
 ## Core Output Contract
@@ -245,6 +249,18 @@ LEI 准则作为报告中的“硬标准校验层”，主要包括：
 ### [references/api-contracts.md](./references/api-contracts.md)
 
 说明数据导入、抓取任务、报告生成、报告查询和导出相关的 API 契约。
+
+### [references/output-template.md](./references/output-template.md)
+
+说明如何复用标准输出模板，并指向实际可复制的 JSON 与 Markdown 样例文件。
+
+### [assets/report_json.template.json](./assets/report_json.template.json)
+
+标准 `report_json` 样例，可直接作为产物模板或测试基线。
+
+### [assets/report_markdown_zh.template.md](./assets/report_markdown_zh.template.md)
+
+标准 `report_markdown_zh` 样例，可直接作为渲染输出模板。
 
 ## Typical Usage
 

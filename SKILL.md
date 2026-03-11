@@ -14,6 +14,7 @@ Implement a portable workflow for multi-source market data acquisition, canonica
 3. Read [references/canonical-schema.md](references/canonical-schema.md) when adding fields, changing symbol normalization, adjusting source/evidence merge behavior, or extending report persistence fields.
 4. Read [references/scoring-and-reporting.md](references/scoring-and-reporting.md) when changing 22-step / LEI validation, report JSON shape, or structured Markdown rendering rules.
 5. Read [references/api-contracts.md](references/api-contracts.md) when changing ingestion, report generation, detail, or export APIs.
+6. Read [references/output-template.md](references/output-template.md) when you need reusable sample artifacts or need to keep JSON and Markdown output aligned with the standard template.
 
 ## Operating Rules
 

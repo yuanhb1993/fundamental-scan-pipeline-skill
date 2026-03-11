@@ -80,6 +80,9 @@ Each LEI row should contain at least:
 
 Recommended top-level shape:
 
+Use `assets/report_json.template.json` as the canonical sample when you need a concrete output baseline.
+
+
 - `symbol`
 - `name`
 - `market`
@@ -108,6 +111,9 @@ Recommended top-level shape:
 `report_markdown_zh` should render the same content in a stable structure.
 
 Recommended section order:
+
+Use `assets/report_markdown_zh.template.md` as the canonical sample when you need a concrete output baseline.
+
 
 1. `# 报告头`
 2. `## 必须补充信息`

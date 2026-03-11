@@ -1,0 +1,161 @@
+{
+  "symbol": "EXAMPLE.US",
+  "name": "示例公司",
+  "market": "US",
+  "asset_type": "STOCK",
+  "snapshot_date": "2026-03-10",
+  "data_freshness": {
+    "quote_as_of": "2026-03-10",
+    "fundamentals_as_of": "2025-12-31",
+    "evidence_updated_at": "2026-03-10T10:00:00+08:00",
+    "report_updated_at": "2026-03-10T10:30:00+08:00"
+  },
+  "entity_resolution": {
+    "original_input": "示例公司",
+    "resolved_symbol": "EXAMPLE.US",
+    "resolved_name": "示例公司",
+    "market": "US",
+    "resolution_status": "resolved",
+    "resolution_evidence": [
+      {
+        "source": "交易所披露/主数据表",
+        "tier": "T1",
+        "note": "名称与代码已匹配"
+      }
+    ]
+  },
+  "evidence_summary": {
+    "primary_sources": 2,
+    "secondary_sources": 1,
+    "tertiary_sources": 0,
+    "field_confidence_overview": {
+      "high": 8,
+      "medium": 5,
+      "low": 2
+    }
+  },
+  "required_inputs": {
+    "industry": "行业分类示例",
+    "financial_years": ["2023", "2024", "2025"],
+    "competitors": ["竞争对手A", "竞争对手B"],
+    "latest_price": "示例值",
+    "price_change_30d": "示例值",
+    "market_cap": "示例值",
+    "avg_turnover": "示例值",
+    "revenue": "示例值",
+    "revenue_growth": "示例值",
+    "ebit_margin": "示例值",
+    "operating_cf": "示例值",
+    "free_cf": "示例值",
+    "total_debt": "示例值",
+    "roe": "示例值",
+    "roic": "示例值",
+    "wacc": "示例值",
+    "pe_ttm": "示例值",
+    "negative_news_summary": "数据缺失，暂无法确认",
+    "management_notes": "财报未补齐，以下判断仅基于已获取字段"
+  },
+  "step_status_matrix": [
+    {
+      "step_id": 1,
+      "step_title": "公司一句话是靠什么赚钱的",
+      "verification_status": "已验证",
+      "key_fields": ["industry", "revenue", "key_asset"],
+      "evidence_refs": ["T1: 年报业务描述"],
+      "summary": "因为主营业务和收入结构已获取，所以可以概括盈利模式。"
+    },
+    {
+      "step_id": 2,
+      "step_title": "利润表质量分析",
+      "verification_status": "部分验证",
+      "key_fields": ["revenue", "revenue_growth", "ebit_margin"],
+      "evidence_refs": ["T1: 审计财报"],
+      "summary": "收入与利润率已获取，但部分同比拆分口径仍待补。"
+    },
+    {
+      "step_id": 18,
+      "step_title": "介入价位、仓位、加减仓、止盈止损建议",
+      "verification_status": "数据缺失待补",
+      "key_fields": ["trade_overlay"],
+      "evidence_refs": [],
+      "summary": "交易叠加层未启用，本节仅保留分析占位。"
+    }
+  ],
+  "lei_check_matrix": [
+    {
+      "rule_id": "LEI-B1",
+      "rule_title": "产品是否标准化、无差别",
+      "status": "通过",
+      "key_fields": ["business_model"],
+      "evidence_refs": ["T2: 公司官网说明"],
+      "summary": "产品形态较标准化。"
+    },
+    {
+      "rule_id": "LEI-F1",
+      "rule_title": "年收入通常不低于1亿美元",
+      "status": "未知",
+      "key_fields": ["revenue"],
+      "evidence_refs": [],
+      "summary": "最新完整年度收入待核实。"
+    }
+  ],
+  "fact_layer": {
+    "verified_facts": [
+      "已取得最近三年核心财务字段",
+      "行业分类与上市主体已完成解析"
+    ],
+    "partial_facts": [
+      "竞争对手列表为部分验证"
+    ],
+    "missing_facts": [
+      "前五大客户与供应商集中度待补"
+    ]
+  },
+  "inference_layer": {
+    "high_probability_judgments": [
+      "因为经营现金流为正且毛利率稳定，所以商业模式质量较高。"
+    ],
+    "open_questions": [
+      "若后续资本开支上升，ROIC 可持续性需重估。"
+    ]
+  },
+  "business_essence": {
+    "one_sentence": "公司通过示例业务向示例客户提供示例价值并获得收益。",
+    "key_asset": "核心资产示例",
+    "critical_daily_task": "关键日常动作示例"
+  },
+  "financial_perspective": {
+    "summary": "因为营收、利润率和现金流字段已部分验证，所以可以完成基础财务透视。",
+    "profitability": "示例值",
+    "cash_flow_quality": "示例值",
+    "balance_sheet_note": "示例值"
+  },
+  "risk_and_moat": {
+    "core_moat": "护城河示例",
+    "disruptive_risk": "颠覆性风险示例",
+    "major_risk_points": ["风险点1", "风险点2"]
+  },
+  "management_insight": {
+    "strategy_direction": "战略方向示例",
+    "promise_tracking": "管理层承诺兑现度示例"
+  },
+  "valuation_and_timing": {
+    "valuation_summary": "若未提供 valuation_calc_json，则本节只能做边界描述。",
+    "timing_summary": "默认不输出交易执行建议。"
+  },
+  "contrarian_checks": [
+    "逆向思考点1",
+    "逆向思考点2"
+  ],
+  "conclusion": {
+    "overall_view": "综合结论示例",
+    "confidence": "中"
+  },
+  "next_data_requests": [
+    "补齐最近三年完整财报",
+    "补齐客户与供应商集中度",
+    "补齐估值计算链路"
+  ],
+  "valuation_calc_json": null,
+  "trade_overlay": null
+}
