@@ -1,330 +1,150 @@
 {
-  "batch_report_id": "batch-20260311-001",
-  "generated_at": "2026-03-11T10:30:00+08:00",
+  "batch_report_id": "batch-20260313-001",
+  "generated_at": "2026-03-13T10:30:00+08:00",
   "input_count": 2,
   "resolved_count": 2,
   "failed_count": 0,
-  "composition_rule": "先逐标的完整生成 report_json，再按顺序组合成 batch artifact；不允许缩略为摘要列表。",
+  "composition_rule": "先逐标的生成简洁版 report_json，再组合成 batch artifact。",
+  "batch_summary": {
+    "overall_view": "本批次适合继续观察 1 个，等待更好价格 1 个。",
+    "common_risks": [
+      "估值预期偏高",
+      "关键财务字段仍有缺口"
+    ],
+    "common_tracking_items": [
+      "补齐最新财报",
+      "补齐估值口径与价格日期"
+    ]
+  },
   "reports": [
     {
-      "symbol": "EXAMPLE.US",
-      "name": "示例公司一",
-      "market": "US",
-      "asset_type": "STOCK",
-      "snapshot_date": "2026-03-10",
-      "data_freshness": {
-        "quote_as_of": "2026-03-10",
-        "fundamentals_as_of": "2025-12-31",
-        "evidence_updated_at": "2026-03-10T10:00:00+08:00",
-        "report_updated_at": "2026-03-10T10:30:00+08:00"
+      "identity": {
+        "symbol": "EXAMPLE.US",
+        "name_zh": "示例公司一",
+        "name_en": "Example One",
+        "market": "US"
       },
-      "entity_resolution": {
-        "original_input": "示例公司一",
-        "resolved_symbol": "EXAMPLE.US",
-        "resolved_name": "示例公司一",
-        "market": "US",
-        "resolution_status": "resolved",
-        "resolution_evidence": [
-          {
-            "source": "交易所披露/主数据表",
-            "tier": "T1",
-            "note": "名称与代码已匹配"
-          }
-        ]
+      "data_boundary": {
+        "report_date": "2026-03-13",
+        "price_reference": "示例价格口径",
+        "financial_scope": "示例财务口径",
+        "verified": ["收入", "现金流"],
+        "partial": ["竞争格局"],
+        "missing": ["实时估值"]
       },
-      "evidence_summary": {
-        "primary_sources": 2,
-        "secondary_sources": 1,
-        "tertiary_sources": 0,
-        "field_confidence_overview": {
-          "high": 8,
-          "medium": 5,
-          "low": 2
-        }
-      },
-      "required_inputs": {
-        "industry": "行业分类示例A",
-        "financial_years": ["2023", "2024", "2025"],
-        "competitors": ["竞争对手A1", "竞争对手A2"],
-        "latest_price": "示例值A",
-        "price_change_30d": "示例值A",
-        "market_cap": "示例值A",
-        "avg_turnover": "示例值A",
-        "revenue": "示例值A",
-        "revenue_growth": "示例值A",
-        "ebit_margin": "示例值A",
-        "operating_cf": "示例值A",
-        "free_cf": "示例值A",
-        "total_debt": "示例值A",
-        "roe": "示例值A",
-        "roic": "示例值A",
-        "wacc": "示例值A",
-        "pe_ttm": "示例值A",
-        "negative_news_summary": "数据缺失，暂无法确认",
-        "management_notes": "财报未补齐，以下判断仅基于已获取字段"
-      },
-      "step_status_matrix": [
-        {
-          "step_id": 1,
-          "step_title": "公司一句话是靠什么赚钱的",
-          "verification_status": "已验证",
-          "key_fields": ["industry", "revenue", "key_asset"],
-          "evidence_refs": ["T1: 年报业务描述"],
-          "summary": "因为主营业务和收入结构已获取，所以可以概括盈利模式。"
-        },
-        {
-          "step_id": 2,
-          "step_title": "利润表质量分析",
-          "verification_status": "部分验证",
-          "key_fields": ["revenue", "revenue_growth", "ebit_margin"],
-          "evidence_refs": ["T1: 审计财报"],
-          "summary": "收入与利润率已获取，但部分同比拆分口径仍待补。"
-        },
-        {
-          "step_id": 18,
-          "step_title": "介入价位、仓位、加减仓、止盈止损建议",
-          "verification_status": "数据缺失待补",
-          "key_fields": ["trade_overlay"],
-          "evidence_refs": [],
-          "summary": "交易叠加层未启用，本节仅保留分析占位。"
-        }
-      ],
-      "lei_check_matrix": [
-        {
-          "rule_id": "LEI-B1",
-          "rule_title": "产品是否标准化、无差别",
-          "status": "通过",
-          "key_fields": ["business_model"],
-          "evidence_refs": ["T2: 公司官网说明"],
-          "summary": "产品形态较标准化。"
-        },
-        {
-          "rule_id": "LEI-F1",
-          "rule_title": "年收入通常不低于1亿美元",
-          "status": "未知",
-          "key_fields": ["revenue"],
-          "evidence_refs": [],
-          "summary": "最新完整年度收入待核实。"
-        }
-      ],
-      "fact_layer": {
-        "verified_facts": [
-          "已取得最近三年核心财务字段",
-          "行业分类与上市主体已完成解析"
-        ],
-        "partial_facts": [
-          "竞争对手列表为部分验证"
-        ],
-        "missing_facts": [
-          "前五大客户与供应商集中度待补"
-        ]
-      },
-      "inference_layer": {
-        "high_probability_judgments": [
-          "因为经营现金流为正且毛利率稳定，所以商业模式质量较高。"
-        ],
-        "open_questions": [
-          "若后续资本开支上升，ROIC 可持续性需重估。"
+      "core_view": {
+        "stance": "继续观察",
+        "confidence": "中",
+        "one_line": "示例公司一是好资产，但当前还需要等数据更完整。",
+        "why_it_matters": [
+          "竞争力已部分验证",
+          "现金流仍需继续观察"
         ]
       },
       "business_essence": {
-        "one_sentence": "公司通过示例业务A向示例客户A提供示例价值并获得收益。",
-        "key_asset": "核心资产示例A",
-        "critical_daily_task": "关键日常动作示例A"
+        "how_it_makes_money": "示例说明",
+        "industry_position": "示例说明",
+        "key_asset": "示例说明",
+        "critical_task": "示例说明"
       },
-      "financial_perspective": {
-        "summary": "因为营收、利润率和现金流字段已部分验证，所以可以完成基础财务透视。",
-        "profitability": "示例值A",
-        "cash_flow_quality": "示例值A",
-        "balance_sheet_note": "示例值A"
+      "financial_snapshot": {
+        "key_metrics": [
+          {
+            "metric": "收入",
+            "value": "示例值",
+            "why_it_matters": "示例说明"
+          }
+        ],
+        "takeaway": "示例财务结论"
       },
-      "risk_and_moat": {
-        "core_moat": "护城河示例A",
-        "disruptive_risk": "颠覆性风险示例A",
-        "major_risk_points": ["风险点A1", "风险点A2"]
+      "risk_counterpoints": {
+        "core_edge": "示例优势",
+        "pricing_power": "示例说明",
+        "top_risks": ["示例风险1", "示例风险2"],
+        "contrarian_points": ["示例反证点"]
       },
-      "management_insight": {
-        "strategy_direction": "战略方向示例A",
-        "promise_tracking": "管理层承诺兑现度示例A"
+      "valuation_timing": {
+        "price_context": "示例价格背景",
+        "valuation_method": "示例估值口径",
+        "market_expectation": "示例市场预期",
+        "decision_view": "示例判断",
+        "timing_view": "示例时机判断"
       },
-      "valuation_and_timing": {
-        "valuation_summary": "若未提供 valuation_calc_json，则本节只能做边界描述。",
-        "timing_summary": "默认不输出交易执行建议。"
-      },
-      "contrarian_checks": [
-        "逆向思考点A1",
-        "逆向思考点A2"
+      "tracking_items": ["示例跟踪项1", "示例跟踪项2"],
+      "sources": [
+        {
+          "title": "示例来源",
+          "tier": "T1",
+          "used_for": "财务数据",
+          "url": "https://example.com"
+        }
       ],
-      "conclusion": {
-        "overall_view": "综合结论示例A",
-        "confidence": "中"
-      },
-      "next_data_requests": [
-        "补齐最近三年完整财报",
-        "补齐客户与供应商集中度",
-        "补齐估值计算链路"
-      ],
-      "valuation_calc_json": null,
+      "analysis_appendix": null,
       "trade_overlay": null
     },
     {
-      "symbol": "EXAMPLE.HK",
-      "name": "示例公司二",
-      "market": "HK",
-      "asset_type": "STOCK",
-      "snapshot_date": "2026-03-10",
-      "data_freshness": {
-        "quote_as_of": "2026-03-10",
-        "fundamentals_as_of": "2025-12-31",
-        "evidence_updated_at": "2026-03-10T11:00:00+08:00",
-        "report_updated_at": "2026-03-10T11:30:00+08:00"
+      "identity": {
+        "symbol": "EXAMPLE.HK",
+        "name_zh": "示例公司二",
+        "name_en": "Example Two",
+        "market": "HK"
       },
-      "entity_resolution": {
-        "original_input": "示例公司二",
-        "resolved_symbol": "EXAMPLE.HK",
-        "resolved_name": "示例公司二",
-        "market": "HK",
-        "resolution_status": "resolved",
-        "resolution_evidence": [
-          {
-            "source": "交易所披露/主数据表",
-            "tier": "T1",
-            "note": "名称与代码已匹配"
-          }
-        ]
+      "data_boundary": {
+        "report_date": "2026-03-13",
+        "price_reference": "示例价格口径",
+        "financial_scope": "示例财务口径",
+        "verified": ["收入", "毛利率"],
+        "partial": ["ROIC"],
+        "missing": ["客户集中度"]
       },
-      "evidence_summary": {
-        "primary_sources": 3,
-        "secondary_sources": 1,
-        "tertiary_sources": 1,
-        "field_confidence_overview": {
-          "high": 9,
-          "medium": 4,
-          "low": 3
-        }
-      },
-      "required_inputs": {
-        "industry": "行业分类示例B",
-        "financial_years": ["2023", "2024", "2025"],
-        "competitors": ["竞争对手B1", "竞争对手B2"],
-        "latest_price": "示例值B",
-        "price_change_30d": "示例值B",
-        "market_cap": "示例值B",
-        "avg_turnover": "示例值B",
-        "revenue": "示例值B",
-        "revenue_growth": "示例值B",
-        "ebit_margin": "示例值B",
-        "operating_cf": "示例值B",
-        "free_cf": "示例值B",
-        "total_debt": "示例值B",
-        "roe": "示例值B",
-        "roic": "示例值B",
-        "wacc": "示例值B",
-        "pe_ttm": "示例值B",
-        "negative_news_summary": "示例负面消息摘要B",
-        "management_notes": "管理层观察示例B"
-      },
-      "step_status_matrix": [
-        {
-          "step_id": 1,
-          "step_title": "公司一句话是靠什么赚钱的",
-          "verification_status": "已验证",
-          "key_fields": ["industry", "revenue", "key_asset"],
-          "evidence_refs": ["T1: 年报业务描述"],
-          "summary": "主营业务与收入结构已获取，可概括盈利模式。"
-        },
-        {
-          "step_id": 6,
-          "step_title": "生意模式的颠覆性风险与核心竞争力分析",
-          "verification_status": "部分验证",
-          "key_fields": ["major_risk_points", "moat_summary"],
-          "evidence_refs": ["T1: 年报风险因素", "T2: 公司官网"],
-          "summary": "核心竞争力已部分验证，但颠覆性风险仍需更多外部证据。"
-        },
-        {
-          "step_id": 18,
-          "step_title": "介入价位、仓位、加减仓、止盈止损建议",
-          "verification_status": "数据缺失待补",
-          "key_fields": ["trade_overlay"],
-          "evidence_refs": [],
-          "summary": "交易叠加层未启用，本节仅保留分析占位。"
-        }
-      ],
-      "lei_check_matrix": [
-        {
-          "rule_id": "LEI-B3",
-          "rule_title": "是否具备自由定价权",
-          "status": "部分通过",
-          "key_fields": ["pricing_power_summary"],
-          "evidence_refs": ["T1: 毛利率与市场份额说明"],
-          "summary": "存在一定定价权，但仍需更完整证据。"
-        },
-        {
-          "rule_id": "LEI-F4",
-          "rule_title": "Operating Cash Flow 应为正",
-          "status": "通过",
-          "key_fields": ["operating_cf"],
-          "evidence_refs": ["T1: 审计财报"],
-          "summary": "经营现金流为正。"
-        }
-      ],
-      "fact_layer": {
-        "verified_facts": [
-          "经营现金流为正",
-          "上市主体与行业分类已完成解析"
-        ],
-        "partial_facts": [
-          "定价权结论为部分验证"
-        ],
-        "missing_facts": [
-          "部分供应商集中度待补"
-        ]
-      },
-      "inference_layer": {
-        "high_probability_judgments": [
-          "因为现金流和护城河描述较强，所以经营质量可能优于行业均值。"
-        ],
-        "open_questions": [
-          "若行业竞争加剧，定价权是否仍可持续。"
+      "core_view": {
+        "stance": "等待更好价格",
+        "confidence": "中",
+        "one_line": "示例公司二基本面不差，但价格已经反映较多乐观预期。",
+        "why_it_matters": [
+          "基本面较稳",
+          "价格未留足安全边际"
         ]
       },
       "business_essence": {
-        "one_sentence": "公司通过示例业务B向示例客户B提供示例价值并获得收益。",
-        "key_asset": "核心资产示例B",
-        "critical_daily_task": "关键日常动作示例B"
+        "how_it_makes_money": "示例说明",
+        "industry_position": "示例说明",
+        "key_asset": "示例说明",
+        "critical_task": "示例说明"
       },
-      "financial_perspective": {
-        "summary": "因为营收、现金流与部分盈利能力字段已验证，所以基础财务透视较完整。",
-        "profitability": "示例值B",
-        "cash_flow_quality": "示例值B",
-        "balance_sheet_note": "示例值B"
+      "financial_snapshot": {
+        "key_metrics": [
+          {
+            "metric": "毛利率",
+            "value": "示例值",
+            "why_it_matters": "示例说明"
+          }
+        ],
+        "takeaway": "示例财务结论"
       },
-      "risk_and_moat": {
-        "core_moat": "护城河示例B",
-        "disruptive_risk": "颠覆性风险示例B",
-        "major_risk_points": ["风险点B1", "风险点B2"]
+      "risk_counterpoints": {
+        "core_edge": "示例优势",
+        "pricing_power": "示例说明",
+        "top_risks": ["示例风险1", "示例风险2"],
+        "contrarian_points": ["示例反证点"]
       },
-      "management_insight": {
-        "strategy_direction": "战略方向示例B",
-        "promise_tracking": "管理层承诺兑现度示例B"
+      "valuation_timing": {
+        "price_context": "示例价格背景",
+        "valuation_method": "示例估值口径",
+        "market_expectation": "示例市场预期",
+        "decision_view": "示例判断",
+        "timing_view": "示例时机判断"
       },
-      "valuation_and_timing": {
-        "valuation_summary": "若未提供 valuation_calc_json，则本节只能做边界描述。",
-        "timing_summary": "默认不输出交易执行建议。"
-      },
-      "contrarian_checks": [
-        "逆向思考点B1",
-        "逆向思考点B2"
+      "tracking_items": ["示例跟踪项1", "示例跟踪项2"],
+      "sources": [
+        {
+          "title": "示例来源",
+          "tier": "T1",
+          "used_for": "财务数据",
+          "url": "https://example.com"
+        }
       ],
-      "conclusion": {
-        "overall_view": "综合结论示例B",
-        "confidence": "中高"
-      },
-      "next_data_requests": [
-        "补齐供应商集中度",
-        "补齐估值计算链路"
-      ],
-      "valuation_calc_json": null,
+      "analysis_appendix": null,
       "trade_overlay": null
     }
   ]

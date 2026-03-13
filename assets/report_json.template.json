@@ -1,161 +1,118 @@
 {
-  "symbol": "EXAMPLE.US",
-  "name": "示例公司",
-  "market": "US",
-  "asset_type": "STOCK",
-  "snapshot_date": "2026-03-10",
-  "data_freshness": {
-    "quote_as_of": "2026-03-10",
-    "fundamentals_as_of": "2025-12-31",
-    "evidence_updated_at": "2026-03-10T10:00:00+08:00",
-    "report_updated_at": "2026-03-10T10:30:00+08:00"
+  "identity": {
+    "symbol": "03696.HK",
+    "name_zh": "英矽智能",
+    "name_en": "Insilico Medicine",
+    "market": "HK"
   },
-  "entity_resolution": {
-    "original_input": "示例公司",
-    "resolved_symbol": "EXAMPLE.US",
-    "resolved_name": "示例公司",
-    "market": "US",
-    "resolution_status": "resolved",
-    "resolution_evidence": [
-      {
-        "source": "交易所披露/主数据表",
-        "tier": "T1",
-        "note": "名称与代码已匹配"
-      }
+  "data_boundary": {
+    "report_date": "2026-03-13",
+    "price_reference": "2026-03-05 公开报道价格 54.65 港元（非实时价）",
+    "financial_scope": "2022-2024 审计报表 + 2025H1 财务信息",
+    "verified": [
+      "收入",
+      "毛利率",
+      "研发费用",
+      "经营现金流",
+      "现金储备",
+      "临床/合作进展"
+    ],
+    "partial": [
+      "竞争格局",
+      "ROIC/ROE 长期趋势",
+      "客户/供应商集中度"
+    ],
+    "missing": [
+      "实时估值指标",
+      "完整 IPO 后连续资本效率序列"
     ]
   },
-  "evidence_summary": {
-    "primary_sources": 2,
-    "secondary_sources": 1,
-    "tertiary_sources": 0,
-    "field_confidence_overview": {
-      "high": 8,
-      "medium": 5,
-      "low": 2
-    }
-  },
-  "required_inputs": {
-    "industry": "行业分类示例",
-    "financial_years": ["2023", "2024", "2025"],
-    "competitors": ["竞争对手A", "竞争对手B"],
-    "latest_price": "示例值",
-    "price_change_30d": "示例值",
-    "market_cap": "示例值",
-    "avg_turnover": "示例值",
-    "revenue": "示例值",
-    "revenue_growth": "示例值",
-    "ebit_margin": "示例值",
-    "operating_cf": "示例值",
-    "free_cf": "示例值",
-    "total_debt": "示例值",
-    "roe": "示例值",
-    "roic": "示例值",
-    "wacc": "示例值",
-    "pe_ttm": "示例值",
-    "negative_news_summary": "数据缺失，暂无法确认",
-    "management_notes": "财报未补齐，以下判断仅基于已获取字段"
-  },
-  "step_status_matrix": [
-    {
-      "step_id": 1,
-      "step_title": "公司一句话是靠什么赚钱的",
-      "verification_status": "已验证",
-      "key_fields": ["industry", "revenue", "key_asset"],
-      "evidence_refs": ["T1: 年报业务描述"],
-      "summary": "因为主营业务和收入结构已获取，所以可以概括盈利模式。"
-    },
-    {
-      "step_id": 2,
-      "step_title": "利润表质量分析",
-      "verification_status": "部分验证",
-      "key_fields": ["revenue", "revenue_growth", "ebit_margin"],
-      "evidence_refs": ["T1: 审计财报"],
-      "summary": "收入与利润率已获取，但部分同比拆分口径仍待补。"
-    },
-    {
-      "step_id": 18,
-      "step_title": "介入价位、仓位、加减仓、止盈止损建议",
-      "verification_status": "数据缺失待补",
-      "key_fields": ["trade_overlay"],
-      "evidence_refs": [],
-      "summary": "交易叠加层未启用，本节仅保留分析占位。"
-    }
-  ],
-  "lei_check_matrix": [
-    {
-      "rule_id": "LEI-B1",
-      "rule_title": "产品是否标准化、无差别",
-      "status": "通过",
-      "key_fields": ["business_model"],
-      "evidence_refs": ["T2: 公司官网说明"],
-      "summary": "产品形态较标准化。"
-    },
-    {
-      "rule_id": "LEI-F1",
-      "rule_title": "年收入通常不低于1亿美元",
-      "status": "未知",
-      "key_fields": ["revenue"],
-      "evidence_refs": [],
-      "summary": "最新完整年度收入待核实。"
-    }
-  ],
-  "fact_layer": {
-    "verified_facts": [
-      "已取得最近三年核心财务字段",
-      "行业分类与上市主体已完成解析"
-    ],
-    "partial_facts": [
-      "竞争对手列表为部分验证"
-    ],
-    "missing_facts": [
-      "前五大客户与供应商集中度待补"
-    ]
-  },
-  "inference_layer": {
-    "high_probability_judgments": [
-      "因为经营现金流为正且毛利率稳定，所以商业模式质量较高。"
-    ],
-    "open_questions": [
-      "若后续资本开支上升，ROIC 可持续性需重估。"
+  "core_view": {
+    "stance": "好公司，但当前价格偏高预期",
+    "confidence": "中",
+    "one_line": "英矽智能已经证明 AI 能转化为临床和 BD 结果，但它仍是一台高研发投入、尚未自我造血的研发引擎。",
+    "why_it_matters": [
+      "平台能力已被临床和合作部分验证",
+      "收入与现金流波动说明商业模式仍未成熟",
+      "当前市场更像在交易未来兑现，而不是当期利润"
     ]
   },
   "business_essence": {
-    "one_sentence": "公司通过示例业务向示例客户提供示例价值并获得收益。",
-    "key_asset": "核心资产示例",
-    "critical_daily_task": "关键日常动作示例"
+    "how_it_makes_money": "通过 AI 药物发现平台服务、自研管线授权与里程碑付款赚钱。",
+    "industry_position": "位于创新药研发前中段，兼具平台服务与自研管线属性。",
+    "key_asset": "Pharma.AI 平台、自动化实验室和 BD 转化能力",
+    "critical_task": "持续把算法结果转化为可验证候选药物与可签约合作"
   },
-  "financial_perspective": {
-    "summary": "因为营收、利润率和现金流字段已部分验证，所以可以完成基础财务透视。",
-    "profitability": "示例值",
-    "cash_flow_quality": "示例值",
-    "balance_sheet_note": "示例值"
+  "financial_snapshot": {
+    "key_metrics": [
+      {
+        "metric": "收入",
+        "value": "2022-2024 从 3014.7 万美元升至 8583.4 万美元；2025H1 同比下滑",
+        "why_it_matters": "说明前期增长快，但收入节奏受合作确认影响很大"
+      },
+      {
+        "metric": "毛利率",
+        "value": "2024 年 90.4%，2025H1 为 83.8%",
+        "why_it_matters": "证明卖的是平台/知识产权价值，而不是重制造"
+      },
+      {
+        "metric": "研发费率",
+        "value": "2024 年约 107%，2025H1 约 129.6%",
+        "why_it_matters": "说明仍处于高投入验证期，而非成熟盈利期"
+      },
+      {
+        "metric": "经营现金流",
+        "value": "2022-2025H1 持续为负",
+        "why_it_matters": "商业模式还未进入稳定自我造血阶段"
+      },
+      {
+        "metric": "现金与负债",
+        "value": "2025H1 现金 2.126 亿美元；大额负债主要为可赎回优先股会计处理",
+        "why_it_matters": "负债表看起来重，但并非典型高息债压垮型风险"
+      }
+    ],
+    "takeaway": "财务上最重要的结论不是‘亏损’，而是公司是否能持续把平台效率转化成临床和授权兑现。"
   },
-  "risk_and_moat": {
-    "core_moat": "护城河示例",
-    "disruptive_risk": "颠覆性风险示例",
-    "major_risk_points": ["风险点1", "风险点2"]
+  "risk_counterpoints": {
+    "core_edge": "端到端平台、临床推进能力与 BD 转化能力",
+    "pricing_power": "对终端药品暂无定价权，但对合作交易具备一定议价能力",
+    "top_risks": [
+      "收入波动大，依赖里程碑确认",
+      "经营现金流持续为负",
+      "市场预期可能已经提前透支"
+    ],
+    "contrarian_points": [
+      "AI 提高前端研发效率，不等于后端临床成功率同步提升",
+      "收入增长快不等于稳定复利，因为项目节奏波动明显"
+    ]
   },
-  "management_insight": {
-    "strategy_direction": "战略方向示例",
-    "promise_tracking": "管理层承诺兑现度示例"
+  "valuation_timing": {
+    "price_context": "发行价 24.05 港元；2026-03-05 可核验公开价 54.65 港元",
+    "valuation_method": "亏损状态下更适合看 PS、平台溢价和管线兑现率，而非 PE",
+    "market_expectation": "市场在交易 AI 制药龙头和未来平台外溢，而不是当期盈利",
+    "decision_view": "更像好公司，但未必是好价格",
+    "timing_view": "不适合在情绪高点追击，更适合等待回撤或新里程碑前的再评估"
   },
-  "valuation_and_timing": {
-    "valuation_summary": "若未提供 valuation_calc_json，则本节只能做边界描述。",
-    "timing_summary": "默认不输出交易执行建议。"
-  },
-  "contrarian_checks": [
-    "逆向思考点1",
-    "逆向思考点2"
+  "tracking_items": [
+    "后续临床 II/III 期数据是否继续兑现",
+    "license-out 和大药企合作是否延续",
+    "经营现金流何时改善",
+    "估值是否在回撤后进入更可接受区间"
   ],
-  "conclusion": {
-    "overall_view": "综合结论示例",
-    "confidence": "中"
-  },
-  "next_data_requests": [
-    "补齐最近三年完整财报",
-    "补齐客户与供应商集中度",
-    "补齐估值计算链路"
+  "sources": [
+    {
+      "title": "港交所招股文件",
+      "tier": "T1",
+      "used_for": "财务数据",
+      "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2025/1218/11959280/2025121800093_c.pdf"
+    },
+    {
+      "title": "公司官网 About",
+      "tier": "T2",
+      "used_for": "业务定位",
+      "url": "https://insilico.com/about"
+    }
   ],
-  "valuation_calc_json": null,
+  "analysis_appendix": null,
   "trade_overlay": null
 }

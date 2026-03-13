@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Use these templates when you need a stable, reusable output contract for one-symbol or multi-symbol deep reports.
+Use these templates when you need a concise, decision-first output contract for one-symbol or multi-symbol reports.
 
 Template files:
 
@@ -15,41 +15,33 @@ Template files:
 
 Single-symbol mode should emit:
 
-- one complete `report_json`
-- one complete `report_markdown_zh`
+- one concise `report_json`
+- one concise `report_markdown_zh`
+
+The report should read like an investment memo, not a full analysis log.
 
 ## Multi-Symbol Rule
 
-Multi-symbol mode must not collapse output into a summary-only table.
+Multi-symbol mode must still generate one complete concise report per symbol first.
 
 Required generation order:
 
-1. Generate one complete `report_json` per symbol.
-2. Generate one complete `report_markdown_zh` per symbol.
+1. Generate one complete concise `report_json` per symbol.
+2. Generate one complete concise `report_markdown_zh` per symbol.
 3. Compose `report_batch_json` from the full per-symbol JSON artifacts.
 4. Compose `report_batch_markdown_zh` by concatenating the full per-symbol Markdown reports in order.
 
-This means batch output is a composition of complete reports, not a shortened list.
-
-## How To Use
-
-1. Build per-symbol `report_json` first from canonical fields, evidence, 22-step state, and LEI checks.
-2. Keep placeholders when data is missing. Do not collapse missing fields into silent omissions.
-3. Render per-symbol `report_markdown_zh` from the same JSON object.
-4. In multi-symbol mode, compose batch artifacts only after all per-symbol artifacts are available or explicitly marked failed.
-
 ## Minimum Reuse Rules
 
-- Preserve top-level field names unless you are intentionally versioning the contract.
+- Preserve the decision-first structure.
 - Keep the Markdown heading order stable.
-- Keep fact layer and inference layer separate.
+- Keep only decision-relevant numbers in the default reading version.
+- Keep `analysis_appendix` empty unless explicitly enabled.
 - Keep `trade_overlay` empty unless explicitly enabled.
-- In batch mode, do not replace full reports with compact summaries.
 
 ## Recommended Adaptation Pattern
 
 - Replace `示例值` with actual resolved values.
-- Replace `evidence_refs` with primary-source references whenever possible.
-- Replace placeholder statuses with actual `已验证 / 部分验证 / 数据缺失待补` or `通过 / 不通过 / 未知` values.
-- If you add custom sections, add them after the standard sections instead of reordering the standard contract.
-- If one symbol fails, keep its failure state explicit in the batch artifact instead of silently removing it.
+- Replace placeholders with actual validated data when available.
+- If data is incomplete, say so once in `数据边界`, then avoid repeating the same warning in every paragraph.
+- If the user asks for full detail, attach it as appendix instead of bloating the default reading version.
